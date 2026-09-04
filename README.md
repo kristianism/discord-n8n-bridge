@@ -1,4 +1,4 @@
-# discord-n8n-bridge
+# Discord to n8n Bridge
 
 Persistent Node.js service that holds a Discord Gateway connection, normalizes new and edited messages into a stable JSON envelope, and POSTs that envelope to an n8n webhook.
 
