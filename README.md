@@ -137,3 +137,7 @@ Run one container (or process) per organization / Discord bot / n8n webhook. Cha
 Logs are JSON on stdout. They include instance id, event type, Discord snowflake ids, HTTP status, and attempt count. They do not include bot tokens, auth header values, message content, or webhook paths.
 
 On `SIGINT` / `SIGTERM` the process destroys the Discord client and drains in-flight deliveries before exit.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, tests, and pull-request expectations. To report a vulnerability or an exposed secret, use [SECURITY.md](SECURITY.md) instead of a public issue.
