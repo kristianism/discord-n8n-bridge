@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.git
+.env
+.env.*
+!.env.example
+*.log
+README.md
+tests
+vitest.config.ts
+tsconfig.json
+tsconfig.build.json
