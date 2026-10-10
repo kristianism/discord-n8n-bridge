@@ -1,13 +1,16 @@
 import { configSecrets, loadConfig } from "./config.js";
-import { ConfigError } from "./errors.js";
 import { createLogger } from "./logger.js";
 import { startBridge } from "./bridge.js";
 import { redactUrl, toLogError } from "./redact.js";
+import { formatStartupError, startupSecretsFromEnv } from "./startup-error.js";
+
+const startupSecrets = startupSecretsFromEnv(process.env);
 
 async function main(): Promise<void> {
   const config = loadConfig(process.env);
-  const logger = createLogger(config);
   const secrets = configSecrets(config);
+  startupSecrets.push(...secrets);
+  const logger = createLogger(config);
 
   logger.info(
     {
@@ -45,18 +48,6 @@ async function main(): Promise<void> {
 try {
   await main();
 } catch (error) {
-  if (error instanceof ConfigError) {
-    process.stderr.write(
-      `${JSON.stringify({ level: "error", msg: error.message })}\n`,
-    );
-    process.exit(1);
-  }
-  process.stderr.write(
-    `${JSON.stringify({
-      level: "error",
-      msg: "fatal startup error",
-      err: toLogError(error),
-    })}\n`,
-  );
+  process.stderr.write(`${formatStartupError(error, startupSecrets)}\n`);
   process.exit(1);
 }
