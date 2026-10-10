@@ -7,9 +7,10 @@ export function redactSecrets(
 ): string {
   let redacted = text;
   for (const secret of extraSecrets) {
-    if (secret.length >= 8) {
-      redacted = redacted.split(secret).join("[redacted]");
+    if (secret.length === 0) {
+      continue;
     }
+    redacted = redacted.split(secret).join("[redacted]");
   }
   redacted = redacted.replace(DISCORD_BOT_TOKEN_PATTERN, "[redacted]");
   redacted = redacted.replace(BEARER_OR_BOT_PATTERN, "[redacted]");
@@ -31,7 +32,7 @@ export function toLogError(
 ): { name: string; message: string } {
   if (error instanceof Error) {
     return {
-      name: error.name,
+      name: redactSecrets(error.name, extraSecrets),
       message: redactSecrets(error.message, extraSecrets),
     };
   }
